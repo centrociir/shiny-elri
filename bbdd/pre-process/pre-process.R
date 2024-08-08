@@ -54,10 +54,11 @@ recodificar <- function(x) {
 }
 
 variables <- c("a4", "a5", "a6", "a7", "c1", "c2", "c4", "c5", "c6_1", 
-               "c6_2", "c6_3", "c6_4", "d1_1", "d1_2", "d1_3")
+               "c6_2", "c6_3", "c6_4", "d1_1", "d1_2", "d1_3", "d3_1", "d3_2", 
+               "d4_2", "d4_3", "c28_1", "c28_2","c28_3", "c28_4", "c28_5", "c28_6")
 
 df_recodificado <- elri_seleccionada %>%
-  mutate(across(all_of(variables), recodificar))
+  mutate(across(all_of(variables), recodificar, .names = "{.col}_cod"))
 
 
 
