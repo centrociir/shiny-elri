@@ -3,6 +3,9 @@ library(haven)
 library(sjmisc)
 
 
+getwd()
+setwd("/Users/matdknu/Dropbox/taller_shiny/shiny-elri")
+
 elri <- read_dta("bbdd/BBDD_ELRI_LONG_4.0.dta")
 
 # Solo quiero mantener al panel ----
@@ -20,10 +23,13 @@ elri <- elri %>%
 
 # Variables que me interesan ---
 
-elri$g2
+#Recode variable "g2" / rename "sexo".
+elri $sexo <- factor(elri $g2,labels = c('Hombre', 'Mujer'))
+elri $sexo <- sjlabelled::set_label(elri $sexo, label = c("Tipo de sexo"))#etiquetamos variable
 
-elri_seleccionada <- elri |> select(
-  ano, urbano_rural, a1, g2, 
+
+elri_seleccionada <- elri  |> select(
+  ano, urbano_rural, a1, sexo, 
   #Identidad
   a4, a5, a6, a7, a8,
   # Religión
@@ -37,7 +43,10 @@ elri_seleccionada <- elri |> select(
   #Apoyo a políticas públicas
   contains("e1_"), contains("e3_"),
   #Salud mental
-  contains("g4"), g17, contains("g5_"))
+  contains("g4"), g17, contains("g5_"), pond) |> 
+  mutate(indigena_es = case_when(
+    a1 >= 10 ~ "No indígena",
+    a1 <= 12   ~ "Indígena"))
 
 
 # Creación de funciones
@@ -53,15 +62,21 @@ recodificar <- function(x) {
   )
 }
 
+
+
 variables <- c("a4", "a5", "a6", "a7", "c1", "c2", "c4", "c5", "c6_1", 
                "c6_2", "c6_3", "c6_4", "d1_1", "d1_2", "d1_3", "d3_1", "d3_2", 
                "d4_2", "d4_3", "c28_1", "c28_2","c28_3", "c28_4", "c28_5", "c28_6")
 
-df_recodificado <- elri_seleccionada %>%
-  mutate(across(all_of(variables), recodificar, .names = "{.col}_cod"))
+elri_recodificada <- elri_seleccionada %>%
+  mutate(across(all_of(variables), recodificar, .names = "{.col}cod"))
 
 
+elri_recodificada <-elri_recodificada |> select(ano, sexo, urbano_rural, indigena_es, ends_with("cod"), pond)
 
+getwd()
+
+write_rds(elri_recodificada, "bbdd/elri_recodificada.rds")
 
 recodificar <- function(x) {
   case_when(
