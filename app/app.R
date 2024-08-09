@@ -139,7 +139,7 @@ server <- function(input, output) {
       ggplot(aes(as.factor(ano), porcentaje, fill = variable)) +
       geom_col() +
       geom_text(aes(label = scales::percent(porcentaje,2)), 
-                position = position_stack(vjust = 0.5), size = 3) +
+                position = position_stack(vjust = 0.5), size = 4) +
       facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_x") +
       labs(x = "Ola de medición",
            y = "Porcentaje de respuesta",
