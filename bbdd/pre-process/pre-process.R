@@ -28,25 +28,27 @@ elri $sexo <- factor(elri $g2,labels = c('Hombre', 'Mujer'))
 elri $sexo <- sjlabelled::set_label(elri $sexo, label = c("Tipo de sexo"))#etiquetamos variable
 
 
-elri_seleccionada <- elri  |> select(
-  ano, urbano_rural, a1, sexo, 
-  #Identidad
-  a4, a5, a6, a7, a8,
-  # Religión
-  r1_1,contains("r11"), 
-  # Familia
-  b1_5, b2_5,
-  #Relaciones intergrupales
-  c1, c2, c4, c5, contains("c3_"), contains("c6_"), contains("c7_"), contains("c28_"),
-  # Conflicto
-  contains("d1_"), contains("d3_"), contains("d4_"), contains("d7_"), contains("d8_"),
-  #Apoyo a políticas públicas
-  contains("e1_"), contains("e3_"),
-  #Salud mental
-  contains("g4"), g17, contains("g5_"), pond) |> 
+elri_seleccionada <- elri  |> 
+  select(
+    ano, urbano_rural, a1, sexo, 
+    # Identidad
+    a4, a5, a6, a7, a8,
+    # Relaciones intergrupales
+    c1, c2, c4, c5, c6_1, c6_2, c7_1, c7_2, c7_3, c12, c28_1, c28_2, c28_3, c28_4, c28_5, c28_6,
+    contains("c3_"), 
+    # Conflicto
+    contains("d1_"), d1_1, d1_2, d1_3, d3_1, d3_2, d3_3, d4_2, 
+    contains("d4_"), contains("d7_"), contains("d8_"),
+    # Apoyo a políticas públicas
+    contains("e1_"), contains("e3_"),
+    # Salud mental
+    contains("g4"), g17, contains("g5_"), 
+    pond) |> 
   mutate(indigena_es = case_when(
     a1 >= 10 ~ "No indígena",
-    a1 <= 12   ~ "Indígena"))
+    a1 <= 12   ~ "Indígena"
+  ))
+
 
 
 # Creación de funciones
@@ -63,13 +65,14 @@ recodificar <- function(x) {
 }
 
 
+# Ver el vector resultante
+variables <- names(elri_seleccionada)[!names(elri_seleccionada) %in% c("ano","pond", "urbano_rural", "a1","indigena_es" ,"sexo")]
 
-variables <- c("a4", "a5", "a6", "a7", "c1", "c2", "c4", "c5", "c6_1", 
-               "c6_2", "c6_3", "c6_4", "d1_1", "d1_2", "d1_3", "d3_1", "d3_2", 
-               "d4_2", "d4_3", "c28_1", "c28_2","c28_3", "c28_4", "c28_5", "c28_6")
 
-elri_recodificada <- elri_seleccionada %>%
+
+elri_recodificada <- elri_seleccionada |> 
   mutate(across(all_of(variables), recodificar, .names = "{.col}cod"))
+
 
 
 elri_recodificada <-elri_recodificada |> select(ano, sexo, urbano_rural, indigena_es, ends_with("cod"), pond)

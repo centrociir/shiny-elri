@@ -1,5 +1,5 @@
 
-
+resultados <- readRDS("bbdd/base_elri_preprocesada.rds")
 
 # para llegar a un dato específico, hay que filtrar el dataframe por la variable a graficar, y la desagregación (grupo)
 resultados |> 
@@ -19,8 +19,11 @@ resultados |>
 
 # revisar todas las variables
 
-variables <- c("d1_1cod",
-               "d1_2cod", "a7cod")
+variables <- c("a4cod", "a5cod", "a6cod", "a7cod", 
+               "c1cod", "c2cod", "c4cod", "c5cod", "c6_1cod", 
+               "c6_2cod", "c6_3cod", "c6_4cod", "d1_1cod", "d1_2cod",
+               "d1_3cod", "d3_1cod", "d3_2cod", "d4_2cod")
+
 
 grupos <- c("muestra+sexo", "muestra")
 
@@ -55,9 +58,15 @@ if (nrow(dato) == 0) {
 }
 
 plot <- dato |> 
-    ggplot(aes(ano, porcentaje, fill = variable)) +
-    geom_col() +
-    facet_wrap(~indigena_es + sexo, nrow = 1)
+  #filter(variable == 3) |> 
+  ggplot(aes(as.factor(ano), porcentaje, fill = variable)) +
+  geom_col() +
+  geom_text(aes(label = scales::percent(porcentaje,2)), 
+            position = position_stack(vjust = 0.5), size = 3) +
+  facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_x") +
+  labs(x = "Ola de medición",
+       y = "Porcentaje de respuesta",
+       fill = "Dimensión")
 
 plot
 
@@ -66,7 +75,7 @@ plot
 # }
 
 # selecionar paletas ----
-if (variable_elegida %in% variables_semaforo) {
+if (variable %in% variables_semaforo) {
     plot + 
         scale_fill_manual(values = c("red", "green", "yellow"))
 } else if (variable_elegida %in% variables_) {
