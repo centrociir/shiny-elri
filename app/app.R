@@ -61,7 +61,7 @@ ui <- fluidPage(
   
   fluidRow(
     column(width = 12, 
-           h1 ("Encuesta Longitudinal de Relaciones Interculturales"))
+           h1 ("Prueba: Encuesta Longitudinal de Relaciones Interculturales"))
   ),
   
   #luidRow(
