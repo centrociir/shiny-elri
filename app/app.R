@@ -14,7 +14,7 @@ library(bslib)
 library(shades)
 library(thematic)
 
-color_base <- "#5360E0"
+color_base <- "#5460E0"
 color_principal = color_base |> saturation(delta(-0.05)) |> as.character()
 color_fondo = color_base |> brightness(delta(-0.65)) |> saturation(delta(-0.4)) |> as.character()
 color_detalle = color_base |> brightness(delta(-0.3)) |> saturation(delta(-0.5)) |> as.character()
