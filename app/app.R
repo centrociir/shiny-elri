@@ -215,6 +215,9 @@ server <- function(input, output, session) {
            fill = "Dimensión")
     
     
+    
+    
+    
   })
   
   
