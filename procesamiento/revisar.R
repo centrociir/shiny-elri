@@ -1,3 +1,9 @@
+library(purrr)
+library(ggplot2)
+library(dplyr)
+library(srvyr)
+library(survey)
+
 
 resultados <- readRDS("bbdd/base_elri_preprocesada.rds")
 
@@ -67,6 +73,32 @@ plot <- dato |>
   labs(x = "Ola de medición",
        y = "Porcentaje de respuesta",
        fill = "Dimensión")
+
+
+
+plot <- dato |> 
+  #filter(variable == 3) |> 
+  ggplot(aes(as.factor(ano), porcentaje, color = variable, group = variable)) +
+  geom_line() +
+  geom_text(aes(label = scales::percent(porcentaje,2)), 
+            position = position_stack(vjust = 0.5), size = 3) +
+  facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_x") +
+  labs(x = "Ola de medición",
+       y = "Porcentaje de respuesta",
+       fill = "Dimensión")
+
+plot
+
+plot <- dato |>  
+  ggplot(aes(y = porcentaje, x = ano, muestra, color = variable, group = variable,
+                      label = as.character(scales::percent(porcentaje, accuracy = .1)))) +
+  geom_line(size = 1) +
+  geom_point(size = 1.8) +
+  scale_y_continuous(labels = scales::percent,
+                     limits = c(0, 1)) +
+  ylab(label = NULL) +
+  xlab(label = NULL)
+
 
 plot
 

@@ -163,6 +163,7 @@ resultados <- resultados |>
   )) |> drop_na(enunciado)
 
 
+resultados |> count(variable_elegida) |> print(n= Inf)
 
 # guardar ----
 getwd()
