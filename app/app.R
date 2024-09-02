@@ -39,18 +39,29 @@ elri <- readRDS("base_elri_preprocesada.rds")  |>
 
 # Lista de variables ------
 
-variables <- elri |> 
-  select(variable_elegida, enunciado, modulo) #|>
-# mutate(etiqueta = paste("Pregunta", enunciado)) |>
-# select(etiqueta, variable_elegida, modulo) 
+modulo_demo <- tribble(~modulo, ~variable_elegida, ~enunciado,
+                       "Sociodemográfico", "sexo", "Sexo",
+                       "Sociodemográfico", "indigena_es", "Autoidentificación",
+                       "Sociodemográfico", "edad", "Edad")
 
-modulos <- elri |> pull(modulo) |> unique()
+
+variables <- elri |> 
+  select(variable_elegida, enunciado, modulo) 
+
+variables <- bind_rows(modulo_demo,
+          variables)
+
+variables_sociodemograficas <- variables |> filter(modulo == "Sociodemográfico") |> pull(variable_elegida)  
+
+modulos <- variables |> pull(modulo) |> unique()
 
 
 lista_variables <- variables |> 
   select(enunciado, variable_elegida) |> 
   distinct() |> 
   deframe()
+
+
 
 
 # Define UI for application that draws a histogram
@@ -171,12 +182,12 @@ server <- function(input, output, session) {
   
   observe({
     message("actualizando selector de variable")
-  updateSelectInput(session,
-                    "variable",
-                    choices = lista_variables()
-                    )
+    updateSelectInput(session,
+                      "variable",
+                      choices = lista_variables()
+    )
   })
-
+  
   
   # Dato por graficar------
   elri_variable <-  reactive({
@@ -204,20 +215,75 @@ server <- function(input, output, session) {
   ## Outpout -----
   
   output$plot <- renderPlot({
-    elri_variable() |> 
-      ggplot(aes(as.factor(ano), porcentaje, fill = variable)) +
-      geom_col() +
-      geom_text(aes(label = scales::percent(porcentaje,2)), 
-                position = position_stack(vjust = 0.5), size = 4) +
-      facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_x") +
-      labs(x = "Ola de medición",
-           y = "Porcentaje de respuesta",
-           fill = "Dimensión")
     
     
+    ### sociodemográfico ----
+  if (input$variable %in% variables_sociodemograficas) {
+  
+    # if (input$variable == "sexo") 
+    # lista_graficos()[[input$variable]]
+    # browser()
+    # elri |> 
+    #   filter(grupo == "muestra") |>
+    #   select(-variable_elegida) |> 
+    #   rename(variable_elegida = input$variable) |> 
+    #   ggplot(aes(as.factor(ano), porcentaje, fill = variable)) +
+    #   geom_col()
+    
+    # plot <- elri |>
+    #     filter(grupo == "muestra") |>
+    #     select(-variable_elegida) |>
+    #     rename(variable_elegida = input$variable) |>
     
     
+    # habría que calcularlo en el script de precalcular
+      
+    plot <- ggplot()
+      # ggplot(aes(as.factor(ano), porcentaje, col = variable, 
+      #            group = variable)) +
+      # geom_line() +
+      # geom_text(aes(label = scales::percent(porcentaje,2)), 
+      #           position = position_stack(vjust = 0.5), size = 4) +
+      # # facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_x") +
+      # labs(x = "Ola de medición",
+      #      y = "Porcentaje de respuesta",
+      #      fill = "Dimensión")
     
+    
+    ### gráfico de lineas ----
+    } else if (input$variable %in% c("a4cod", "a5cod")) {
+      
+      # browser()
+      plot <- elri_variable() |> 
+        ggplot(aes(as.factor(ano), porcentaje, col = variable, 
+                   group = variable)) +
+        geom_line() +
+        geom_text(aes(label = scales::percent(porcentaje,2)),
+                  nudge_y = 0.02,
+                  # position = position_stack(vjust = 0.5),
+                  size = 4) +
+        scale_y_continuous(limits = c(0, 1)) +
+        facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_y") +
+        labs(x = "Ola de medición",
+             y = "Porcentaje de respuesta",
+             fill = "Dimensión")
+      
+      # dev.new()  
+    } else {
+      
+      ## gráfico de barras normal ----
+      plot <- elri_variable() |> 
+        ggplot(aes(as.factor(ano), porcentaje, fill = variable)) +
+        geom_col() +
+        geom_text(aes(label = scales::percent(porcentaje,2)), 
+                  position = position_stack(vjust = 0.5), size = 4) +
+        facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_x") +
+        labs(x = "Ola de medición",
+             y = "Porcentaje de respuesta",
+             fill = "Dimensión")
+    }
+    
+    return(plot)
   })
   
   

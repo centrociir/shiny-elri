@@ -3,10 +3,22 @@ library(haven)
 library(sjmisc)
 
 
-getwd()
-setwd("/Users/matdknu/Dropbox/taller_shiny/shiny-elri")
+# getwd()
+# setwd("/Users/matdknu/Dropbox/taller_shiny/shiny-elri")
 
 elri <- read_dta("bbdd/BBDD_ELRI_LONG_4.0.dta")
+
+elri |> 
+  select(a5) |> 
+  count(a5) |> 
+  mutate(a5b = recodificar(a5),
+         a5c = as_factor(a5))
+
+# elri |> 
+#   pivot_longer(cols = c(everything())
+
+elri |> 
+  pivot_longer(cols = where(is.labelled))
 
 # Solo quiero mantener al panel ----
 
