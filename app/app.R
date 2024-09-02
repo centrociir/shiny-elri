@@ -14,6 +14,7 @@ library(bslib)
 library(shades)
 library(thematic)
 library(fresh)
+library(gt)
 
 color_base <- "#5460E0"
 color_principal = color_base |> saturation(delta(-0.05)) |> as.character()
@@ -49,7 +50,7 @@ variables <- elri |>
   select(variable_elegida, enunciado, modulo) 
 
 variables <- bind_rows(modulo_demo,
-          variables)
+                       variables)
 
 variables_sociodemograficas <- variables |> filter(modulo == "Sociodemográfico") |> pull(variable_elegida)  
 
@@ -82,10 +83,42 @@ ui <- fluidPage(
   
   
   
+  # fluidRow(
+  #   column(width = 8, 
+  #          h1 ("Prueba: Encuesta Longitudinal de Relaciones Interculturales"),
+  #   ),
+  #   column(width = 4, 
+  #          # div(style = css(margin_left = "0px", margin_right = "auto"),
+  #            tags$img(src = "logo.svg",
+  #                     style = css(height = "200px")
+  #                     )
+  #          
+  #   )
+  # ),
+  
   fluidRow(
     column(width = 12, 
-           h1 ("Prueba: Encuesta Longitudinal de Relaciones Interculturales"))
+           style = css(margin_bottom = "40px"),
+           
+           div(style = css(display = "inline-block"),
+               div(
+                 style = css(max_width = "600px",
+                             margin_top = "-30px",
+                             display = "inline-block"),
+                 h1("Prueba: Encuesta Longitudinal de Relaciones Interculturales"),
+               ),
+               div(style = css(display = "inline-block",
+                               vertical_align = "bottom",
+                               padding_top = "-60px"),
+                   tags$img(src = "logo.svg",
+                            style = css(height = "200px")
+                   )
+                   
+               )
+           )
+    )
   ),
+  
   
   #luidRow(
   # column(width = 12,
@@ -132,34 +165,59 @@ ui <- fluidPage(
     )
   ), 
   
-  column(width = 12, 
-         
-         
-         div(style = css(margin_top = "20px",# Margen de arriba
-                         margin_bottom = "20px",
-                         opacity = "100%",
-                         color =  "white"),
-             h1(textOutput("titulo")),
-         ),
-         
-         #div("Contraste indígena y no indígena",
-         #    style = css(background = color_detalle,
-         #                margin = "20px",
-         #                padding = "12px",
-         #                border_radius = "6px"
-         #    )
-         #  ),
-         
-         
-         # grafico ----
-         div(style = css (margin = "auto",
-                          width = "700px"),
+  fluidRow(
+    column(width = 12, 
+           
+           
+           div(style = css(margin_top = "20px",# Margen de arriba
+                           margin_bottom = "20px",
+                           opacity = "100%",
+                           color =  "white"),
+               h1(textOutput("titulo")),
+           ),
+           
+           #div("Contraste indígena y no indígena",
+           #    style = css(background = color_detalle,
+           #                margin = "20px",
+           #                padding = "12px",
+           #                border_radius = "6px"
+           #    )
+           #  ),
+           
+           
+           # grafico ----
+           div(style = css (margin = "auto",
+                            width = "700px"),
+               
+               plotOutput("plot")
+           ),
+           
+           # tabla ----
+           gt_output("tabla")
+    )
+  ),
+  
+  fluidRow(
+    column(12,
+           
+           hr(), 
+           
+           div(
+             style = css(font_size = "70%", opacity = "70%"),
+             markdown("Este proyecto fue realizado por el **CIIR**"),
              
-             plotOutput("plot")
-         ),
-         
-         # tabla ----
-         tableOutput("tabla")
+             
+             tags$img(src = "logo.svg",
+                      style = css(height = "70px")
+             ),
+             
+             
+             div(style = css(margin_top = "0px", margin_bottom = "60px"),
+                 markdown("2024")
+             )
+           )
+           
+    )
   )
 )  
 
@@ -218,27 +276,27 @@ server <- function(input, output, session) {
     
     
     ### sociodemográfico ----
-  if (input$variable %in% variables_sociodemograficas) {
-  
-    # if (input$variable == "sexo") 
-    # lista_graficos()[[input$variable]]
-    # browser()
-    # elri |> 
-    #   filter(grupo == "muestra") |>
-    #   select(-variable_elegida) |> 
-    #   rename(variable_elegida = input$variable) |> 
-    #   ggplot(aes(as.factor(ano), porcentaje, fill = variable)) +
-    #   geom_col()
-    
-    # plot <- elri |>
-    #     filter(grupo == "muestra") |>
-    #     select(-variable_elegida) |>
-    #     rename(variable_elegida = input$variable) |>
-    
-    
-    # habría que calcularlo en el script de precalcular
+    if (input$variable %in% variables_sociodemograficas) {
       
-    plot <- ggplot()
+      # if (input$variable == "sexo") 
+      # lista_graficos()[[input$variable]]
+      # browser()
+      # elri |> 
+      #   filter(grupo == "muestra") |>
+      #   select(-variable_elegida) |> 
+      #   rename(variable_elegida = input$variable) |> 
+      #   ggplot(aes(as.factor(ano), porcentaje, fill = variable)) +
+      #   geom_col()
+      
+      # plot <- elri |>
+      #     filter(grupo == "muestra") |>
+      #     select(-variable_elegida) |>
+      #     rename(variable_elegida = input$variable) |>
+      
+      
+      # habría que calcularlo en el script de precalcular
+      
+      plot <- ggplot()
       # ggplot(aes(as.factor(ano), porcentaje, col = variable, 
       #            group = variable)) +
       # geom_line() +
@@ -248,9 +306,9 @@ server <- function(input, output, session) {
       # labs(x = "Ola de medición",
       #      y = "Porcentaje de respuesta",
       #      fill = "Dimensión")
-    
-    
-    ### gráfico de lineas ----
+      
+      
+      ### gráfico de lineas ----
     } else if (input$variable %in% c("a4cod", "a5cod")) {
       
       # browser()
@@ -269,6 +327,7 @@ server <- function(input, output, session) {
              fill = "Dimensión")
       
       # dev.new()  
+      
     } else {
       
       ## gráfico de barras normal ----
@@ -286,11 +345,85 @@ server <- function(input, output, session) {
     return(plot)
   })
   
-  
-  output$tabla <- renderTable({
+  # tabla ----
+  output$tabla <- render_gt({
     message("Haciendo tabla")
-    elri_variable()
+    # elri_variable()
     
+    # browser()
+    
+    tabla_1 <- elri_variable() |> 
+      select(ano, grupo, porcentaje,
+             variable, indigena_es)
+    
+    
+    # ejecutar si hay missing
+    if (is.na(tabla_1$porcentaje) |> any()) {
+      tabla_1 <- tabla_1 |> 
+        # relleno de NA
+        group_by(variable) |>
+        fill(porcentaje, .direction = "up")
+      # print(n=Inf)
+    }
+    
+    tabla_2 <- tabla_1 |> 
+      ungroup() |> 
+      arrange(indigena_es, variable, ano) |> 
+      group_by(grupo, variable, indigena_es) |> 
+      mutate(cambio = (porcentaje/lag(porcentaje)-1),
+             cambio = ifelse(is.na(cambio), 0, cambio)) |> 
+      mutate(flecha = case_when(cambio >= 0 ~ "arrow-up",
+                                cambio < 0 ~ "arrow-down"))
+    
+    tabla_3 <-tabla_2 |> 
+      select(-cambio) |> 
+      pivot_wider(names_from = ano, 
+                  values_from = c(flecha, porcentaje))
+    
+    # tabla_1
+    
+    # browser()
+    
+    tabla_out <- tabla_3 |> 
+      ungroup() |> 
+      select(-grupo) |> 
+      select(-flecha_2016) |> 
+      # relocate(flecha_2016, .before = porcentaje_2016) |>
+      relocate(flecha_2018, .before = porcentaje_2018) |>
+      relocate(flecha_2021, .before = porcentaje_2021) |>
+      relocate(flecha_2023, .before = porcentaje_2023) |>
+      rename_with(~str_remove(.x, "porcentaje_"), .cols = starts_with("porcentaje")) |> 
+      gt() |> 
+      fmt_icon(columns = starts_with("flecha")) |> 
+      fmt_percent(columns = where(is.numeric),
+                  decimals = 1) |> 
+      cols_label(variable = "Dimensión",
+                 indigena_es = "Identificación",
+                 flecha_2018 = "",
+                 flecha_2021 = "",
+                 flecha_2023 = "") |> 
+      data_color(columns = c(indigena_es), 
+                 method = "factor", apply_to = "text",
+                 # palette = c("red", "blue"),
+                 na_color = color_texto) |> 
+      tab_style(style = cell_text(weight = "bold"), 
+                locations = cells_column_labels()) |> 
+      # tab_style(locations = cells_body(columns = where(is.numeric)),
+      # style = list(cell_borders(color = color_fondo, sides = "right", weight = px(24))
+      # cell_fill(color = "red"),
+      # cell_text(style = "italic"))
+      # )) |> 
+      tab_options(table.font.color = color_texto, 
+                  table.background.color = color_fondo,
+                  table.font.color.light = color_texto, 
+                  table_body.hlines.color = color_detalle,
+                  table_body.vlines.color = color_detalle,
+                  column_labels.border.top.color = color_fondo, 
+                  column_labels.border.bottom.color = color_detalle, 
+                  table_body.border.bottom.color = color_detalle) 
+    # table.font.names = "IBM Plex Mono")
+    
+    return(tabla_out)
   }) #Función reactiva, re-ejecutan con los input
   
   
