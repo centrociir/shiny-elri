@@ -1,11 +1,11 @@
 name: interculturales
-title: interculturales
+title: app
 username: matdknu
 account: matdknu
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 12428218
-bundleId: 8983535
+bundleId: 9054505
 url: https://matdknu.shinyapps.io/interculturales/
 version: 1
 asMultiple: FALSE

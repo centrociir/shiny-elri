@@ -16,12 +16,19 @@ library(thematic)
 library(fresh)
 library(gt)
 
+color_base = "#365c8d"
+color_principal = "#3a87c8"
+color_fondo = "#FFFFFF"
+color_negativo = "#e5084b"
+color_detalle = "#964191" #"#770072" |> lighten(0.2)
+color_texto = "#555" #"#3a1582" |> lighten(0.2)
+#
 color_base <- "#5460E0"
-color_principal = color_base |> saturation(delta(-0.05)) |> as.character()
-color_fondo = color_base |> brightness(delta(-0.65)) |> saturation(delta(-0.4)) |> as.character()
+#color_principal = color_base |> saturation(delta(-0.05)) |> as.character()
+#color_fondo = color_base |> brightness(delta(-0.65)) |> saturation(delta(-0.4)) |> as.character()
 #color_fondo = "white"
-color_detalle = color_base |> brightness(delta(-0.3)) |> saturation(delta(-0.5)) |> as.character()
-color_texto = color_base |> chroma(70) |> lightness(95) |> as.character()
+#color_detalle = color_base |> brightness(delta(-0.3)) |> saturation(delta(-0.5)) |> as.character()
+#color_texto = color_base |> chroma(70) |> lightness(95) |> as.character()
 
 swatch(c(color_base, color_principal, color_fondo, color_detalle))
 
@@ -34,7 +41,7 @@ thematic_shiny(font = "auto",
 # filter(modulo != "Salud mental" )
 
 elri <- readRDS("base_elri_preprocesada.rds")  |> 
-  filter(modulo != "Salud mental")
+  filter(modulo != "Salud mental" )
 
 # variable <- unique(elri$variable_elegida)
 
@@ -98,26 +105,50 @@ ui <- fluidPage(
   
   fluidRow(
     column(width = 12, 
-           style = css(margin_bottom = "40px"),
+           style = "margin-bottom: 50px; position: relative;",
            
-           div(style = css(display = "inline-block"),
-               div(
-                 style = css(max_width = "600px",
-                             margin_top = "-30px",
-                             display = "inline-block"),
-                 h1("Prueba: Encuesta Longitudinal de Relaciones Interculturales"),
-               ),
-               div(style = css(display = "inline-block",
-                               vertical_align = "bottom",
-                               padding_top = "-60px"),
-                   tags$img(src = "logo.svg",
-                            style = css(height = "200px")
-                   )
-                   
+           # Título centrado con estilo
+           div(style = "text-align: center; max-width: 90%; margin-top: 20px;",
+               h1("Estudio Longitudinal de Relaciones Interculturales",
+                  style = "font-family: 'Arial', sans-serif;
+                font-size: 2.5em;
+                font-weight: bold;
+                background: linear-gradient(to right, #4660E0, #FFA07A);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+                margin-bottom: 20px;"
+               )
+           ),
+           
+           # Texto adicional debajo del título
+           div(style = "text-align: center; max-width: 90%; margin-top: 10px;",
+               h3("La encuesta del cambio intercultural de Chile",
+                  style = "font-family: 'Arial', sans-serif;
+                font-size: 1.4em;
+                font-weight: bold;
+                background: linear-gradient(to right, #C395AD, #000000);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+                margin-bottom: 20px;"
+               )
+           ),
+           
+           
+           
+
+           
+           # Imagen a la derecha
+           div(style = "position: absolute; top: 0; right: 20px;",  # Ajuste de `right` para mover la imagen hacia la izquierda
+               tags$img(src = "logo.svg",
+                        style = "height: 70px;"
                )
            )
     )
-  ),
+  )
+  
+  ,
   
   
   #luidRow(
@@ -130,6 +161,30 @@ ui <- fluidPage(
   #        selectInput(inputId = "modulo", "Seleccionar", choices = variable),
   # ), 
   
+  
+  ##intro ----
+  fluidRow(
+    column(12, style = "margin-top: -26px;",
+           
+           verbatimTextOutput("posicion_vertical"),
+           
+           markdown("El Estudio Longitudinal de Relaciones Interculturales (ELRI) es una medición que nace el año 2016 y 
+           finaliza en 2023 con el objetivo de **dar cuenta y analizar las diversas relaciones interculturales entre aquellas personas que se identifican con alguna etnia dentro de los principales grupos indígenas del país y la población no indígena del país**.
+"),
+           
+           markdown("Específicamente, se buscó levantar información de alta calidad respecto a cinco sub-temáticas principales: 
+                    (1) Identificación étnica y relaciones familiares, (2) relaciones intergrupales (3) conflicto social, (4) políticas públicas, (5) salud física y mental."),
+           
+          markdown("El estudio ELRI fue creado y organizado por el Centro de Estudios Interculturales e Indígenas, CIIR."),
+                  
+           hr()
+           
+           
+    )
+  ),
+  
+  
+  
   # Selectores -----
   
   fluidRow(
@@ -139,7 +194,7 @@ ui <- fluidPage(
            #p ("Seleccione una variable"),
            #strong ("Seleccione una variable"),
            #m ("Seleccione una variable"),
-           selectInput(inputId = "modulo", "Seleccionar", 
+           selectInput(inputId = "modulo", "Seleccione un módulo", 
                        choices = modulos,
                        width = "100%" )
     )
@@ -152,7 +207,7 @@ ui <- fluidPage(
            #p ("Seleccione una variable"),
            #strong ("Seleccione una variable"),
            #m ("Seleccione una variable"),
-           selectInput(inputId = "variable", "Seleccionar", 
+           selectInput(inputId = "variable", "Seleccione una pregunta", 
                        choices = lista_variables,
                        width = "100%" )),
     column(width = 6,     
@@ -203,24 +258,33 @@ ui <- fluidPage(
            hr(), 
            
            div(
-             style = css(font_size = "70%", opacity = "70%"),
-             markdown("Este proyecto fue realizado por el **CIIR**"),
+             style = "font-size: 70%; opacity: 70%; text-align: center;",
+             markdown("Este proyecto fue realizado por el **CIIR**
+                      
+                      Unidad de Estudios Cuantitativos 
+                      
+                      Equipo de Investigación:
+                    *  Matías Deneken Uribe, Coordinador Técnico e Investigador ELRI
+                    *  Bastián Olea Durán, Web Developer and Data Scientist"),
              
-             
-             tags$img(src = "logo.svg",
-                      style = css(height = "70px")
+             # Imágenes una al lado de la otra
+             div(
+               style = "display: inline-block; margin-top: 20px;",
+               tags$img(src = "logo.svg", style = "height: 70px; margin-right: 10px;"),
+               tags$img(src = "udp.jpeg", style = "height: 80px; margin-right: 10px;"),
+               tags$img(src = "puc.png", style = "height: 80px; margin-right: 10px;"),
+               tags$img(src = "anid.png", style = "height: 80px; margin-right: 10px;"),
+               tags$img(src = "uahc.jpeg", style = "height: 70px;")
              ),
              
-             
-             div(style = css(margin_top = "0px", margin_bottom = "60px"),
-                 markdown("2024")
+             div(style = "margin-top: 20px; margin-bottom: 60px;",
+                 markdown("Santiago, Chile. 2024.")
              )
            )
            
     )
   )
 )  
-
 
 
 
@@ -404,7 +468,7 @@ server <- function(input, output, session) {
                  flecha_2023 = "") |> 
       data_color(columns = c(indigena_es), 
                  method = "factor", apply_to = "text",
-                 # palette = c("red", "blue"),
+                 palette = c("#357980", "#EE6A9B"),
                  na_color = color_texto) |> 
       tab_style(style = cell_text(weight = "bold"), 
                 locations = cells_column_labels()) |> 
