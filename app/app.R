@@ -182,11 +182,14 @@ ui <- fluidPage(
            markdown("Específicamente, se buscó levantar información de alta calidad respecto a cinco sub-temáticas principales: 
                     (1) Identificación étnica y relaciones familiares, (2) relaciones intergrupales (3) conflicto social, (4) políticas públicas, (5) salud física y mental."),
            
-          markdown("El estudio ELRI fue creado y organizado por el Centro de Estudios Interculturales e Indígenas, CIIR."),
-                  
+           div(
+             style = "text-align: center; font-size: 100%;",
+             HTML('El estudio ELRI fue creado y organizado por el 
+                  <a href="https://www.ciir.cl" target="_blank" style="color: #FF69B4; font-weight: bold;">
+                  Centro de Estudios Interculturales e Indígenas (CIIR)</a>.')
+           ),
+           
            hr()
-           
-           
     )
   ),
   
@@ -312,32 +315,51 @@ ui <- fluidPage(
            
            div(
              style = "font-size: 70%; opacity: 70%; text-align: center;",
-             markdown("Este proyecto fue realizado por el **CIIR**
-                      
-                      Unidad de Estudios Cuantitativos 
-                      
-                      Equipo de Investigación:
-                    *  Matías Deneken Uribe, Coordinador Técnico e Investigador ELRI
-                    *  Bastián Olea Durán, Web Developer y Data Scientist"),
+             HTML('Este proyecto fue realizado por la Unidad de Estudios Cuantitativos del  
+        <a href="https://www.ciir.cl" target="_blank" style="color: #FF69B4; font-weight: bold;">Centro de Estudios Interculturales e Indígenas</a>
+
+        <br><br>
+        Equipo de Investigación:<br>
+        <ul style="list-style-type: disc; padding-left: 20px; text-align: left; display: inline-block;">
+          <li>Matías Deneken Uribe, Coordinador Técnico e Investigador ELRI (m.deneken@alumni.uc.cl) &#128231;</li>
+          <li>Bastián Olea Durán, Web Developer y Data Scientist</li>
+        </ul>')
+           )
+           
+           
+           ,
+           
              
-             # Imágenes una al lado de la otra
+           # Imágenes centradas y una al lado de la otra
+           div(
+             style = "text-align: center;",
              div(
                style = "display: inline-block; margin-top: 20px;",
-               tags$img(src = "logo.svg", style = "height: 70px; margin-right: 10px;"),
-               tags$img(src = "udp.jpeg", style = "height: 80px; margin-right: 10px;"),
-               tags$img(src = "puc.png", style = "height: 80px; margin-right: 10px;"),
-               tags$img(src = "anid.png", style = "height: 80px; margin-right: 10px;"),
-               tags$img(src = "uahc.jpeg", style = "height: 70px;")
+               tags$img(src = "logo.svg", style = "height: 80px; margin-right: 10px; opacity: 0.8;"),
+               tags$img(src = "udp.jpeg", style = "height: 80px; margin-right: 10px; opacity: 0.8;"),
+               tags$img(src = "puc.png", style = "height: 80px; margin-right: 10px; opacity: 0.8;"),
+               tags$img(src = "uahc.jpeg", style = "height: 80px; opacity: 0.8;"),
+               tags$img(src = "anid.png", style = "height: 80px; margin-right: 10px; opacity: 0.8;")
+               
+             ), 
+             
+             # Dirección
+             div(style = "margin-top: 20px; margin-bottom: 60px;",
+                 markdown("Av. Vicuña Mackenna 4860")
              ),
              
-             div(style = "margin-top: 20px; margin-bottom: 60px;",
-                 markdown("Santiago, Chile. 2024.")
+             # Año
+             div(style = "margin-top: 2px; margin-bottom: 6px;",
+                 markdown("2024")
              )
+           )
+           
+             
            )
            
     )
   )
-)  
+  
 
 
 
