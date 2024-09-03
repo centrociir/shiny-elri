@@ -15,6 +15,9 @@ library(shades)
 library(thematic)
 library(fresh)
 library(gt)
+library(ggplot2)
+library(scales)
+
 
 color_base = "#365c8d"
 color_principal = "#3a87c8"
@@ -51,6 +54,12 @@ modulo_demo <- tribble(~modulo, ~variable_elegida, ~enunciado,
                        "Sociodemográfico", "sexo", "Sexo",
                        "Sociodemográfico", "indigena_es", "Autoidentificación",
                        "Sociodemográfico", "edad", "Edad")
+
+
+
+identidad <- c("a4cod", "a5cod", "a6cod", "a7cod", "a8")
+
+
 
 
 variables <- elri |> 
@@ -254,7 +263,7 @@ ui <- fluidPage(
            
            # grafico ----
            div(style = css (margin = "auto",
-                            width = "700px"),
+                            width = "1000px"),
                
                plotOutput("plot")
            ),
@@ -448,22 +457,25 @@ server <- function(input, output, session) {
       
       
       ### gráfico de lineas ----
-    } else if (input$variable %in% c("a4cod", "a5cod")) {
-      
+    } else if (input$variable %in% identidad) {      
       # browser()
+
+      
       plot <- elri_variable() |> 
-        ggplot(aes(as.factor(ano), porcentaje, col = variable, 
+        ggplot(aes(as.factor(ano), porcentaje * 100, col = variable, 
                    group = variable)) +
         geom_line() +
-        geom_text(aes(label = scales::percent(porcentaje,2)),
-                  nudge_y = 0.02,
-                  # position = position_stack(vjust = 0.5),
+        geom_text(aes(label = paste0(round(porcentaje * 100, 2), "%")),
+                  nudge_y = 2,
                   size = 4) +
-        scale_y_continuous(limits = c(0, 1)) +
+        scale_y_continuous(limits = c(0, 100), labels = scales::percent_format(scale = 1)) +
         facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_y") +
         labs(x = "Ola de medición",
              y = "Porcentaje de respuesta",
-             fill = "Dimensión")
+             fill = "Dimensión") 
+      
+      plot
+      
       
       # dev.new()  
       

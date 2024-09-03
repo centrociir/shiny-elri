@@ -129,6 +129,7 @@ resultados <- resultados |>
     startsWith(variable_elegida, "a5") ~ "¿Cuán importante es para usted ser parte de los (% PUEBLO ORIGINARIO)?",
     startsWith(variable_elegida, "a6") ~ "¿Cuánto se identifica con Chile?",
     startsWith(variable_elegida, "a7") ~ "¿Cuán importante es para usted ser chileno/a?",
+    startsWith(variable_elegida, "a8") ~ "¿Usted se siente más bien chileno, pueblo originario o una mezcla de los dos?",
     startsWith(variable_elegida, "c3_1") ~ "¿En qué medida considera que los chilenos no indígenas son amistosos? ",
     startsWith(variable_elegida, "c1") ~ "¿cómo le caen los chilenos no indígenas?",
     startsWith(variable_elegida, "c2") ~ "¿cuánto confía en los chilenos no indígenas?",
