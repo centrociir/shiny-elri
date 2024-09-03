@@ -38,7 +38,7 @@ thematic_shiny(font = "auto",
                accent = color_detalle)
 
 #elri <- readRDS("app/base_elri_preprocesada.rds") |> 
-# filter(modulo != "Salud mental" )
+ #filter(modulo != "Salud mental" )
 
 elri <- readRDS("base_elri_preprocesada.rds")  |> 
   filter(modulo != "Salud mental" )
@@ -107,6 +107,22 @@ ui <- fluidPage(
     column(width = 12, 
            style = "margin-bottom: 50px; position: relative;",
            
+           # Imágenes centradas y una al lado de la otra
+           div(
+             style = "text-align: center;",
+             div(
+               style = "display: inline-block; margin-top: 20px;",
+               tags$img(src = "logo.svg", style = "height: 80px; margin-right: 10px; opacity: 0.8;"),
+               tags$img(src = "udp.jpeg", style = "height: 80px; margin-right: 10px; opacity: 0.8;"),
+               tags$img(src = "puc.png", style = "height: 80px; margin-right: 10px; opacity: 0.8;"),
+               tags$img(src = "uahc.jpeg", style = "height: 80px; opacity: 0.8;"),
+               tags$img(src = "anid.png", style = "height: 80px; margin-right: 10px; opacity: 0.8;")
+               
+             ), 
+           
+           
+           
+           
            # Título centrado con estilo
            div(style = "text-align: center; max-width: 90%; margin-top: 20px;",
                h1("Estudio Longitudinal de Relaciones Interculturales",
@@ -121,29 +137,20 @@ ui <- fluidPage(
                )
            ),
            
-           # Texto adicional debajo del título
-           div(style = "text-align: center; max-width: 90%; margin-top: 10px;",
-               h3("La encuesta del cambio intercultural de Chile",
-                  style = "font-family: 'Arial', sans-serif;
-                font-size: 1.4em;
-                font-weight: bold;
-                background: linear-gradient(to right, #C395AD, #000000);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-                margin-bottom: 20px;"
-               )
-           ),
-           
-           
-           
-
-           
-           # Imagen a la derecha
-           div(style = "position: absolute; top: 0; right: 20px;",  # Ajuste de `right` para mover la imagen hacia la izquierda
-               tags$img(src = "logo.svg",
-                        style = "height: 70px;"
-               )
+        #  # Texto adicional debajo del título
+        #  div(style = "text-align: center; max-width: 90%; margin-top: 10px;",
+        #      h3("La encuesta del cambio intercultural de Chile",
+        #         style = "font-family: 'Arial', sans-serif;
+        #       font-size: 1.4em;
+        #       font-weight: bold;
+        #       background: linear-gradient(to right, #C395AD, #000000);
+        #       -webkit-background-clip: text;
+        #       -webkit-text-fill-color: transparent;
+        #       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        #       margin-bottom: 20px;"
+        #      )
+        #  ),
+          
            )
     )
   )
@@ -183,7 +190,9 @@ ui <- fluidPage(
     )
   ),
   
+  # 
   
+ 
   
   # Selectores -----
   
@@ -253,6 +262,50 @@ ui <- fluidPage(
   ),
   
   fluidRow(
+    # Primera columna: Acceso a base de datos
+    column(width = 3,  # 3 columnas para cada uno (12/4 = 3)
+           div(style = "text-align: center; margin: 10px; padding: 15px; 
+                    border: 1px solid #ccc; border-radius: 5px; 
+                    background-color: #D7CDFF; min-height: 120px;",
+               a("Base de datos", href = "https://www.google.com", target = "_blank",
+                 style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
+           )
+    ),
+    
+    # Segunda columna: Acceso al manual metodológico
+    column(width = 3,
+           div(style = "text-align: center; margin: 10px; padding: 15px; 
+                    border: 1px solid #ccc; border-radius: 5px; 
+                    background-color: #D7CDFF; min-height: 120px;",
+               a("Manual Metodológico", href = "https://www.google.com", target = "_blank",
+                 style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
+           )
+    ),
+    
+    # Tercera columna: Acceso a libro de código
+    column(width = 3,
+           div(style = "text-align: center; margin: 10px; padding: 15px; 
+                    border: 1px solid #ccc; border-radius: 5px; 
+                    background-color: #D7CDFF; min-height: 120px;",
+               a("Libro de códigos", href = "https://www.google.com", target = "_blank",
+                 style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
+           )
+    ),
+    
+    # Cuarta columna: Aprobación ética
+    column(width = 3,
+           div(style = "text-align: center; margin: 10px; padding: 15px; 
+                    border: 1px solid #ccc; border-radius: 5px; 
+                    background-color: #D7CDFF; min-height: 120px;",
+               a("Acta de aprobación ética", href = "https://www.google.com", target = "_blank",
+                 style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
+           )
+    )
+  ),
+           
+           
+  
+  fluidRow(
     column(12,
            
            hr(), 
@@ -265,7 +318,7 @@ ui <- fluidPage(
                       
                       Equipo de Investigación:
                     *  Matías Deneken Uribe, Coordinador Técnico e Investigador ELRI
-                    *  Bastián Olea Durán, Web Developer and Data Scientist"),
+                    *  Bastián Olea Durán, Web Developer y Data Scientist"),
              
              # Imágenes una al lado de la otra
              div(
