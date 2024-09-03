@@ -321,7 +321,7 @@ ui <- fluidPage(
         <br><br>
         Equipo de Investigación:<br>
         <ul style="list-style-type: disc; padding-left: 20px; text-align: left; display: inline-block;">
-          <li>Matías Deneken Uribe, Coordinador Técnico e Investigador ELRI (m.deneken@alumni.uc.cl) &#128231;</li>
+          <li>Matías Deneken Uribe, Coordinador Técnico e Investigador ELRI   <a href="m.deneken@alumni.uc.cl" target="_blank" style="color: #0000FF; font-weight: bold;">(m.deneken@alumni.uc.cl)</a>&#128231;</li>
           <li>Bastián Olea Durán, Web Developer y Data Scientist</li>
         </ul>')
            )
