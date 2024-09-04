@@ -44,20 +44,23 @@ thematic_shiny(font = "auto",
  #filter(modulo != "Salud mental" )
 
 elri <- readRDS("base_elri_preprocesada.rds")  |> 
+  filter(modulo != "Salud mental" ) |> 
   filter(modulo != "Salud mental" )
 
 # variable <- unique(elri$variable_elegida)
 
 # Lista de variables ------
 
-modulo_demo <- tribble(~modulo, ~variable_elegida, ~enunciado,
-                       "Sociodemográfico", "sexo", "Sexo",
-                       "Sociodemográfico", "indigena_es", "Autoidentificación",
-                       "Sociodemográfico", "edad", "Edad")
+#modulo_demo <- tribble(~modulo, ~variable_elegida, ~enunciado,
+#                       "Sociodemográfico", "sexo", "Sexo",
+#                       "Sociodemográfico", "indigena_es", "Autoidentificación",
+#                       "Sociodemográfico", "edad", "Edad")
+#
 
 
+identidad <- c("a4cod", "a5cod", "a6cod", "a7cod", "c1cod", "c2cod")
 
-identidad <- c("a4cod", "a5cod", "a6cod", "a7cod")
+
 
 
 
@@ -65,11 +68,11 @@ identidad <- c("a4cod", "a5cod", "a6cod", "a7cod")
 variables <- elri |> 
   select(variable_elegida, enunciado, modulo) 
 
-variables <- bind_rows(modulo_demo,
-                       variables)
-
-variables_sociodemograficas <- variables |> filter(modulo == "Sociodemográfico") |> pull(variable_elegida)  
-
+#variables <- bind_rows(modulo_demo,
+#                       variables)
+#
+#variables_sociodemograficas <- variables |> filter(modulo == "Sociodemográfico") |> pull(variable_elegida)  
+#
 modulos <- variables |> pull(modulo) |> unique()
 
 
@@ -134,7 +137,7 @@ ui <- fluidPage(
            
            # Título centrado con estilo
            div(style = "text-align: center; max-width: 90%; margin-top: 20px;",
-               h1("Estudio Longitudinal de Relaciones Interculturales",
+               h1("Estudio Longitudinal de Relaciones Interculturales (ELRI)",
                   style = "font-family: 'Arial', sans-serif;
                 font-size: 2.5em;
                 font-weight: bold;
@@ -220,9 +223,10 @@ ui <- fluidPage(
                        width = "100%" )
     )
   ),
+
   
   fluidRow(
-    column(width = 6,
+    column(width = 8,
            # style = "color: #4660E0;",
            # style = css(color = color_principal), # Formato R
            #p ("Seleccione una variable"),
@@ -231,10 +235,10 @@ ui <- fluidPage(
            selectInput(inputId = "variable", "Seleccione una pregunta", 
                        choices = lista_variables,
                        width = "100%" )),
-    column(width = 6,     
+    column(width = 4,     
            selectInput(inputId = "grupo", "Filtro muestral", 
-                       choices = c("Dato desagregado por autoidentificación indígena" = "muestra",
-                                   "Dato desagregado por Sexo y Autoidentificación" = "muestra+sexo"
+                       choices = c("Autoidentificación indígena" = "muestra"#,
+                                  # "Dato desagregado por Sexo y Autoidentificación" = "muestra+sexo"
                        ),
                        width = "100%"
            ),
@@ -245,8 +249,8 @@ ui <- fluidPage(
     column(width = 12, 
            
            
-           div(style = css(margin_top = "20px",# Margen de arriba
-                           margin_bottom = "20px",
+           div(style = css(margin_top = "22px",# Margen de arriba
+                           margin_bottom = "22px",
                            opacity = "100%",
                            color =  "white"),
                h1(textOutput("titulo")),
@@ -275,41 +279,61 @@ ui <- fluidPage(
   
   fluidRow(
     # Primera columna: Acceso a base de datos
-    column(width = 3,  # 3 columnas para cada uno (12/4 = 3)
+    column(width = 2,  # 3 columnas para cada uno (12/4 = 3)
            div(style = "text-align: center; margin: 10px; padding: 15px; 
                     border: 1px solid #ccc; border-radius: 5px; 
                     background-color: #D7CDFF; min-height: 120px;",
-               a("Base de datos", href = "https://www.google.com", target = "_blank",
+               a("Base de datos", href = "https://drive.google.com/drive/folders/1umtNgQdbssiGyoESN53fFpXqxwWfk_Wk?usp=share_link", target = "_blank",
                  style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
            )
     ),
     
-    # Segunda columna: Acceso al manual metodológico
-    column(width = 3,
+    # Segunda columna: Acceso al Cuestionarios
+    column(width = 2,
            div(style = "text-align: center; margin: 10px; padding: 15px; 
                     border: 1px solid #ccc; border-radius: 5px; 
                     background-color: #D7CDFF; min-height: 120px;",
-               a("Manual Metodológico", href = "https://www.google.com", target = "_blank",
+               a("Cuestionarios", href = "https://drive.google.com/drive/folders/1252Bml2OAvRWPT2kkR08hDqssxUOuAxO?usp=share_link", target = "_blank",
                  style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
            )
     ),
     
     # Tercera columna: Acceso a libro de código
-    column(width = 3,
+    column(width = 2,
            div(style = "text-align: center; margin: 10px; padding: 15px; 
                     border: 1px solid #ccc; border-radius: 5px; 
                     background-color: #D7CDFF; min-height: 120px;",
-               a("Libro de códigos", href = "https://www.google.com", target = "_blank",
+               a("Libro de códigos", href = "https://drive.google.com/drive/folders/1aRl8B2rmylmJvsLSVlICPKyVlY_T69Ul?usp=share_link", target = "_blank",
                  style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
            )
     ),
     
-    # Cuarta columna: Aprobación ética
-    column(width = 3,
+    # Cuarta columna: Acceso a Manual Metodológico
+    column(width = 2,
            div(style = "text-align: center; margin: 10px; padding: 15px; 
                     border: 1px solid #ccc; border-radius: 5px; 
                     background-color: #D7CDFF; min-height: 120px;",
-               a("Acta de aprobación ética", href = "https://www.google.com", target = "_blank",
+               a("Manual Metodológico ", href = "https://drive.google.com/file/d/14tLL1DpVX27_pEBEPyi-tJ2vkcNnItd4/view?usp=share_link", target = "_blank",
+                 style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
+           )
+    ),
+    
+    
+    # Quinta columna: Consentimiento informado
+    column(width = 2,
+           div(style = "text-align: center; margin: 10px; padding: 15px; 
+                    border: 1px solid #ccc; border-radius: 5px; 
+                    background-color: #D7CDFF; min-height: 120px;",
+               a("Consentimiento informado ", href = "https://drive.google.com/file/d/1lSy8t0mVrOCkL5A9gDBHGMeJ60h7Jktg/view?usp=share_link", target = "_blank",
+                 style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
+           )
+    ),
+    #Sexta columna: Aprobación ética
+    column(width = 2,
+           div(style = "text-align: center; margin: 10px; padding: 15px; 
+                    border: 1px solid #ccc; border-radius: 5px; 
+                    background-color: #D7CDFF; min-height: 120px;",
+               a("Acta de aprobación ética", href = "https://drive.google.com/file/d/1e0S8tZj2zZuOyeg4iMCzFTbiVDKbKeUl/view?usp=share_link", target = "_blank",
                  style = "display: block; width: 100%; font-weight: bold; text-decoration: none; color: inherit;")
            )
     )
@@ -330,8 +354,9 @@ ui <- fluidPage(
         <br><br>
         Equipo de Investigación:<br>
         <ul style="list-style-type: disc; padding-left: 20px; text-align: left; display: inline-block;">
-          <li>Matías Deneken Uribe, Coordinador Técnico e Investigador ELRI   <a href="m.deneken@alumni.uc.cl" target="_blank" style="color: #0000FF; font-weight: bold;">(m.deneken@alumni.uc.cl)</a>&#128231;</li>
-          <li>Bastián Olea Durán, Web Developer y Data Scientist</li>
+          <li>Matías Deneken Uribe, Investigador de la Unidad de Estudios Cuantitativos - CIIR   <a href="m.deneken@alumni.uc.cl" target="_blank" style="color: #0000FF; font-weight: bold;">(m.deneken@alumni.uc.cl)</a>&#128231;</li>
+           <li>Roberto Cantillán, Coordinador Técnico ELRI </li>
+          <li>Bastián Olea Durán, Desarrollador Web </li>
         </ul>')
            )
            
@@ -424,7 +449,7 @@ server <- function(input, output, session) {
     
     
     ### sociodemográfico ----
-    if (input$variable %in% variables_sociodemograficas) {
+    #if (input$variable %in% variables_sociodemograficas) {
       
       # if (input$variable == "sexo") 
       # lista_graficos()[[input$variable]]
@@ -444,7 +469,7 @@ server <- function(input, output, session) {
       
       # habría que calcularlo en el script de precalcular
       
-      plot <- ggplot()
+   #   plot <- ggplot()
       # ggplot(aes(as.factor(ano), porcentaje, col = variable, 
       #            group = variable)) +
       # geom_line() +
@@ -455,9 +480,10 @@ server <- function(input, output, session) {
       #      y = "Porcentaje de respuesta",
       #      fill = "Dimensión")
       
-      
+      ##YA NO ME FILTRA BIEN ¿NO SÉ POR QUÉ?
       ### gráfico de lineas ----
-    } else if (input$variable %in% identidad) {      
+    #} else
+      if (input$variable %in% identidad) {      
       # browser()
 
       
@@ -472,7 +498,10 @@ server <- function(input, output, session) {
         facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_y") +
         labs(x = "Ola de medición",
              y = "Porcentaje de respuesta",
-             fill = "Dimensión") 
+             fill = "Dimensión")  +
+        theme(legend.position = "top",
+              legend.text = element_text(size = 12),  # Tamaño del texto de la leyenda
+              legend.title = element_text(size = 14))  # Tamaño del título de la leyenda
       
       plot
       
@@ -483,14 +512,21 @@ server <- function(input, output, session) {
       
       ## gráfico de barras normal ----
       plot <- elri_variable() |> 
-        ggplot(aes(as.factor(ano), porcentaje, fill = variable)) +
-        geom_col() +
-        geom_text(aes(label = scales::percent(porcentaje,2)), 
-                  position = position_stack(vjust = 0.5), size = 4) +
-        facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_x") +
+        ggplot(aes(as.factor(ano), porcentaje * 100, col = variable, 
+                   group = variable)) +
+        geom_line() +
+        geom_text(aes(label = paste0(round(porcentaje * 100, 2), "%")),
+                  nudge_y = 2,
+                  size = 4) +
+        scale_y_continuous(limits = c(0, 100), labels = scales::percent_format(scale = 1)) +
+        facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_y") +
         labs(x = "Ola de medición",
              y = "Porcentaje de respuesta",
-             fill = "Dimensión")
+             fill = "Dimensión") +
+        theme(legend.position = "top",
+              legend.text = element_text(size = 12),  # Tamaño del texto de la leyenda
+              legend.title = element_text(size = 14))  # Tamaño del título de la leyenda
+      
     }
     
     return(plot)
