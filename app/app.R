@@ -17,6 +17,7 @@ library(fresh)
 library(gt)
 library(ggplot2)
 library(scales)
+library(ggrepel)
 
 
 color_base = "#365c8d"
@@ -43,7 +44,8 @@ thematic_shiny(font = "auto",
 #elri <- readRDS("app/base_elri_preprocesada.rds") |> 
  #filter(modulo != "Salud mental" )
 
-elri <- readRDS("base_elri_preprocesada.rds")  |> 
+elri <- readRDS("base_elri_preprocesada.rds") |> 
+  mutate(ano = as.numeric(ano)) |> 
   filter(modulo != "Salud mental" ) |> 
   filter(modulo != "Salud mental" )
 
@@ -266,11 +268,24 @@ ui <- fluidPage(
            
            
            # grafico ----
+          
            div(style = css (margin = "auto",
-                            width = "1000px"),
+                            width = "100%"),
                
-               plotOutput("plot")
+               plotOutput("plot",
+                          height = "600px")
            ),
+           
+        # texto ------
+           
+      div(
+        style = css(width = "600px",
+                    margin = "auto",
+                    margin_top = "24px",
+                    font_size = "100%"),
+        htmlOutput("texto"),  
+      ),     
+           
            
            # tabla ----
            gt_output("tabla")
@@ -356,7 +371,7 @@ ui <- fluidPage(
         <ul style="list-style-type: disc; padding-left: 20px; text-align: left; display: inline-block;">
           <li>Matías Deneken Uribe, Investigador de la Unidad de Estudios Cuantitativos - CIIR   <a href="m.deneken@alumni.uc.cl" target="_blank" style="color: #0000FF; font-weight: bold;">(m.deneken@alumni.uc.cl)</a>&#128231;</li>
            <li>Roberto Cantillán, Coordinador Técnico ELRI </li>
-          <li>Bastián Olea Durán, Desarrollador Web </li>
+          <li>Bastián Olea Herrera, Desarrollador Web </li>
         </ul>')
            )
            
@@ -481,56 +496,86 @@ server <- function(input, output, session) {
       #      fill = "Dimensión")
       
       ##YA NO ME FILTRA BIEN ¿NO SÉ POR QUÉ?
-      ### gráfico de lineas ----
+    ## lineas ----
     #} else
       if (input$variable %in% identidad) {      
-      # browser()
+     
+         cat("Gráfico de líneas")
+        
+        # browser()
 
-      
+      browser()
       plot <- elri_variable() |> 
-        ggplot(aes(as.factor(ano), porcentaje * 100, col = variable, 
+        ggplot(aes(ano, porcentaje , col = variable,
                    group = variable)) +
-        geom_line() +
-        geom_text(aes(label = paste0(round(porcentaje * 100, 2), "%")),
-                  nudge_y = 2,
-                  size = 4) +
-        scale_y_continuous(limits = c(0, 100), labels = scales::percent_format(scale = 1)) +
-        facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_y") +
-        labs(x = "Ola de medición",
-             y = "Porcentaje de respuesta",
-             fill = "Dimensión")  +
-        theme(legend.position = "top",
-              legend.text = element_text(size = 12),  # Tamaño del texto de la leyenda
-              legend.title = element_text(size = 14))  # Tamaño del título de la leyenda
-      
-      plot
+        geom_line(lineend = "round",
+                  linewidth = 1.2) +
+        geom_text_repel(aes(label = scales::percent(porcentaje, 1.1)),
+                  nudge_y = 0.04,
+                  size = 4,
+                  show.legend = FALSE,
+                  direction = "y",
+                  force = 3,
+                  min.segment.length = 3) +
+       scale_x_continuous(expand = expansion(c(0.1, 0.1)), 
+                          breaks = unique(elri$ano)) +
+        scale_y_continuous(limits = c(0, 1), labels = scales::percent) +
+        facet_wrap(~indigena_es , nrow = 1, scales = "free_y")  +
+        theme_classic(base_size =  22) +
+        theme(panel.grid.major.y = element_line(color = "grey90")) #Ver esto porque no e
+     # plot
       
       
       # dev.new()  
       
     } else {
       
+      cat ("Gráfico de barra")
+      
       ## gráfico de barras normal ----
+      browser()
       plot <- elri_variable() |> 
-        ggplot(aes(as.factor(ano), porcentaje * 100, col = variable, 
-                   group = variable)) +
-        geom_line() +
-        geom_text(aes(label = paste0(round(porcentaje * 100, 2), "%")),
-                  nudge_y = 2,
-                  size = 4) +
-        scale_y_continuous(limits = c(0, 100), labels = scales::percent_format(scale = 1)) +
-        facet_wrap(~indigena_es + sexo, nrow = 1, scales = "free_y") +
-        labs(x = "Ola de medición",
-             y = "Porcentaje de respuesta",
-             fill = "Dimensión") +
-        theme(legend.position = "top",
-              legend.text = element_text(size = 12),  # Tamaño del texto de la leyenda
-              legend.title = element_text(size = 14))  # Tamaño del título de la leyenda
+        ggplot(aes(as.factor(ano), porcentaje, fill = variable)) +
+        geom_col(width = 0.7) +
+        geom_text(aes(label = ifelse(porcentaje >0.05, 
+                                     scales::percent(porcentaje, 2),
+                                     "")), 
+                  position = position_stack(vjust = 0.5), size = 4, show.legend = F) +
+        facet_wrap(~indigena_es , nrow = 1, scales = "free_x") +
+        theme_classic(base_size =  22) 
       
     }
     
+    plot <- plot +  
+      guides(fill = guide_legend(position = "top"),
+             color = guide_legend(position = "top")) + 
+      labs(x = "Ola de medición",
+           y = "Porcentaje de respuesta",
+           fill = "Dimensión",
+           color = "Dimensión")  +
+      theme(strip.background.x = element_rect(linewidth = 0),
+            strip.text = element_text(size = 20)) #Borra las líneas del borde. 
+    
+ 
+    
     return(plot)
   })
+  
+  # textos ----
+  
+  output$texto <- renderUI({ #Genera htlm.
+    
+    variable <- input$variable
+    # variable <- "otras"
+    
+    archivo <- paste0("texto/", variable, ".md")
+    
+    archivo <- ifelse(file.exists(archivo) == FALSE, "texto/otras.md", archivo)
+    
+    includeMarkdown(archivo)
+    
+  })
+  
   
   # tabla ----
   output$tabla <- render_gt({
