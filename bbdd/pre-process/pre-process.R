@@ -152,9 +152,9 @@ elri_recodificada <- elri_recodificada %>%
                 ~ case_when(
                   . == 1 ~ "Chileno ",
                   . == 2 ~ "Pueblo Originario",
-                  . == 3 ~ "Chileno y Pueblo Originario al mismo tiempo",
-                  . == 4 ~ "Pueblo Originario primero , y chileno después",
-                  . == 5 ~ "Chileno primero, y Pueblo Originarios después",
+                  . == 3 ~ "Chileno y Pueblo Originario",
+                  . == 4 ~ "Originario primero y chileno después",
+                  . == 5 ~ "Chileno primero y originario después",
                   TRUE ~ NA
                 ))) 
   

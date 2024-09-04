@@ -57,7 +57,7 @@ modulo_demo <- tribble(~modulo, ~variable_elegida, ~enunciado,
 
 
 
-identidad <- c("a4cod", "a5cod", "a6cod", "a7cod", "a8")
+identidad <- c("a4cod", "a5cod", "a6cod", "a7cod")
 
 
 
@@ -517,7 +517,7 @@ server <- function(input, output, session) {
       # print(n=Inf)
     }
     
-    tabla_2 <- tabla_1 |> 
+    tabla_2 <- tabla_1 |>  ## ¿Cómo le puedo añadir color??
       ungroup() |> 
       arrange(indigena_es, variable, ano) |> 
       group_by(grupo, variable, indigena_es) |> 
