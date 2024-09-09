@@ -521,31 +521,31 @@ server <- function(input, output, session) {
         # browser()
 
         plot <- elri_variable() |> 
-          ggplot(aes(ano, porcentaje, col = variable, group = variable)) +
-          geom_line(lineend = "round", linewidth = 1.5) +  # Aumenté el grosor de la línea
-          geom_point(size = 2) +  # Añadí puntos pequeños para marcar los años
+          ggplot(aes(x = ano, y = porcentaje, col = variable, group = variable)) +
+          geom_line(lineend = "round", linewidth = 1.5) +  # Grosor de la línea
+          geom_point(size = 2) +  # Puntos pequeños para marcar los años
           geom_text_repel(aes(label = scales::percent(porcentaje, accuracy = 1.1)),
                           nudge_y = 0.04,
-                          size = 5,  # Aumenté el tamaño del texto
+                          size = 5,  # Tamaño del texto para los porcentajes
                           show.legend = FALSE,
                           direction = "y",
                           force = 3,
                           min.segment.length = 3) +
           scale_x_continuous(expand = expansion(c(0.1, 0.1)), 
-                             breaks = unique(elri$ano)) +
+                             breaks = unique(elri_variable()$ano)) +
           scale_y_continuous(limits = c(0, 1), labels = scales::percent) +
           facet_wrap(~indigena_es , nrow = 1, scales = "free_y") +
-          theme_classic(base_size = 24) +  # Aumenté el tamaño base del texto
+          theme_classic(base_size = 24) +  # Tamaño base del texto
           theme(panel.grid.major.y = element_line(color = "grey90"),
-                axis.title.x = element_text(size = 20, face = "bold"),  # Más grande y en negrita
+                axis.title.x = element_text(size = 20, face = "bold"),  # Títulos en negrita
                 axis.title.y = element_text(size = 20, face = "bold"),
                 axis.text = element_text(size = 18),  # Texto de los ejes más grande
-                strip.text = element_text(size = 22, face = "bold"),  # Títulos de las facetas más grandes y en negrita
-                legend.position = "top",  # Coloco la leyenda arriba para mejor visibilidad
-                legend.text = element_text(size = 18),  # Texto de la leyenda más grande
-                plot.margin = margin(10, 10, 10, 10))  # Aumenté los márgenes
+                strip.text = element_text(size = 22, face = "bold"),  # Títulos de facetas en negrita
+                legend.position = "top",  # Leyenda arriba
+                legend.text = element_text(size = 18),  # Texto de leyenda más grande
+                plot.margin = margin(10, 10, 10, 10))  # Márgenes más amplios
         
-      
+        
       
       # dev.new()  
       
@@ -580,10 +580,10 @@ server <- function(input, output, session) {
            fill = "Dimensión",
            color = "Dimensión") +
       theme(strip.background.x = element_rect(linewidth = 0),
-            strip.text = element_text(size = 20)) +  # Borra las líneas del borde.
-      scale_fill_viridis_d(option = "viridis") +     # Aplica la paleta plasma
-      scale_color_viridis_d(option = "viridis")      # Aplica la paleta plasma para color
- 
+            strip.text = element_text(size = 20)) +  # Eliminar bordes de facetas
+      scale_fill_viridis_d(option = "viridis") +     # Paleta viridis
+      scale_color_viridis_d(option = "viridis")      # Colores viridis para líneas
+    
     
     return(plot)
   })

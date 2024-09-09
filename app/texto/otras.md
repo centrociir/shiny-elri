@@ -1,2 +1,1 @@
-sakldcmsalñcm,sa
-askldcmaslñcma 
+ 
