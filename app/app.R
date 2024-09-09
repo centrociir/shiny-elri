@@ -206,7 +206,7 @@ ui <- fluidPage(
        Centro de Estudios Interculturales e Indígenas (CIIR)</a>, en alianza con el 
        <a href="https://www.coes.cl" target="_blank" style="color: #40485e; font-weight: bold;">
        Centro de Estudios de Conflicto y Cohesión Social (COES)</a> y el 
-       <a href="https://midap.cl" target="_blank" style="color: #bbc261; font-weight: bold;">
+       <a href="https://midap.org" target="_blank" style="color: #bbc261; font-weight: bold;">
        Instituto Milenio para la Investigación en Depresión y Personalidad (MIDAP)</a>.')
            ),
            
