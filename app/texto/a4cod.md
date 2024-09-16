@@ -1,4 +1,5 @@
-# Identidad
+# Sección Identidad
+####  ¿Cuánto se identifica con los pueblos originarios?
 
 A lo largo de la Encuesta ELRI, el grado de identificación con los pueblos originarios se mantuvo relativamente constante para las personas que se autoidentifican como indígenas. La mayoría de este grupo se ubica entre niveles de identificación “algo” y “bastante,” reflejando una tendencia sostenida en torno al **50%** y **35%**, respectivamente. Por otro lado, la proporción de quienes se identifican poco ha sido consistentemente baja, con una leve disminución en los últimos años, lo que sugiere una mayor inclinación hacia una identificación moderada o alta con los pueblos originarios.
 
