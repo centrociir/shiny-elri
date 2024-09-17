@@ -131,7 +131,7 @@ elri_recodificada <- elri_recodificada %>%
                 ~ case_when(
                   . == 1 ~ "1. En desacuerdo",
                   . == 2 ~ "2. Ni de acuerdo ni en desacuerdo",
-                  . == 3 ~ "3. de acuerdo",
+                  . == 3 ~ "3. De acuerdo",
                   TRUE ~ as.character(.)
                 ))) |> 
   mutate(across(starts_with("d1"), 

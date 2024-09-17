@@ -5,7 +5,7 @@ account: matdknu
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 12428218
-bundleId: 9108284
+bundleId: 9112592
 url: https://matdknu.shinyapps.io/interculturales/
 version: 1
 asMultiple: FALSE

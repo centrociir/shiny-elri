@@ -125,8 +125,8 @@ resultados$sexo[is.na(resultados$sexo)] <- " "
 
 resultados <- resultados |> 
   mutate(enunciado = case_when(
-    startsWith(variable_elegida, "a4") ~ "¿Cuánto se identifica con los (% PUEBLO ORIGINARIO)?",
-    startsWith(variable_elegida, "a5") ~ "¿Cuán importante es para usted ser parte de los (% PUEBLO ORIGINARIO)?",
+    startsWith(variable_elegida, "a4") ~ "¿Cuánto se identifica con los pueblos originarios?",
+    startsWith(variable_elegida, "a5") ~ "¿Cuán importante es para usted ser parte de los pueblos originarios?",
     startsWith(variable_elegida, "a6") ~ "¿Cuánto se identifica con Chile?",
     startsWith(variable_elegida, "a7") ~ "¿Cuán importante es para usted ser chileno/a?",
     startsWith(variable_elegida, "a8") ~ "¿Usted se siente más bien chileno, pueblo originario o una mezcla de los dos?",
@@ -135,21 +135,21 @@ resultados <- resultados |>
     startsWith(variable_elegida, "c15") ~ "¿Con qué frecuencia ha tenido malas experiencias con personas de Pueblo Originario tales como desacuerdos, tensiones, peleas, o conflictos?",
     startsWith(variable_elegida, "c16") ~ "Actualmente, ¿cuántos de sus amigos diría usted que son Pueblo Originario?",
     startsWith(variable_elegida, "c1") ~ "¿cómo le caen los chilenos no indígenas?",
-    startsWith(variable_elegida, "c28_1") ~ "Los (% PUEBLO ORIGINARIO) deberían mantener sus costumbres y tradiciones",
-    startsWith(variable_elegida, "c28_2") ~ "Los (% PUEBLO ORIGINARIO) deberían mantener su propia cultura.",
-    startsWith(variable_elegida, "c28_3") ~ "Los (% PUEBLO ORIGINARIO) deberían adoptar costumbres y tradiciones chilenas",
-    startsWith(variable_elegida, "c28_4") ~ "Los (% PUEBLO ORIGINARIO) deberían adquirir la cultura de los chilenos.",
-    startsWith(variable_elegida, "c28_5") ~ "Los (% PUEBLO ORIGINARIO) deberían tener amistades con los chilenos no indígenas.",
-    startsWith(variable_elegida, "c28_6") ~ "Que los (% PUEBLO ORIGINARIO) pasen su tiempo libre con chilenos no indígenas.",
+    startsWith(variable_elegida, "c28_1") ~ "Los pueblos originarios deberían mantener sus costumbres y tradiciones",
+    startsWith(variable_elegida, "c28_2") ~ "Los pueblos originarios deberían mantener su propia cultura.",
+    startsWith(variable_elegida, "c28_3") ~ "Los pueblos originarios deberían adoptar costumbres y tradiciones chilenas",
+    startsWith(variable_elegida, "c28_4") ~ "Los pueblos originarios deberían adquirir la cultura de los chilenos.",
+    startsWith(variable_elegida, "c28_5") ~ "Los pueblos originarios deberían tener amistades con los chilenos no indígenas.",
+    startsWith(variable_elegida, "c28_6") ~ "Que los pueblos originarios pasen su tiempo libre con chilenos no indígenas.",
     startsWith(variable_elegida, "c2") ~ "¿cuánto confía en los chilenos no indígenas?",
-    startsWith(variable_elegida, "c4") ~ "¿cómo le caen los (% PUEBLO ORIGINARIO)?",
-    startsWith(variable_elegida, "c5") ~ "¿cuánto confía en los (% PUEBLO ORIGINARIO)?",
-    startsWith(variable_elegida, "c6_1") ~ "¿En qué medida considera que los (% PUEBLO ORIGINARIO) son amistosos?",
-    startsWith(variable_elegida, "c6_2") ~ "¿En qué medida considera que los (% PUEBLO ORIGINARIO) son competentes?",
+    startsWith(variable_elegida, "c4") ~ "¿cómo le caen los pueblos originarios?",
+    startsWith(variable_elegida, "c5") ~ "¿cuánto confía en los pueblos originarios?",
+    startsWith(variable_elegida, "c6_1") ~ "¿En qué medida considera que los pueblos originarios son amistosos?",
+    startsWith(variable_elegida, "c6_2") ~ "¿En qué medida considera que los pueblos originarios son competentes?",
     startsWith(variable_elegida, "c7_1") ~ "Pensado con la gente que se relaciona ¿Cuántos de ellos son chilenos no-indígenas?",
     startsWith(variable_elegida, "c7_2") ~ "Pensado con la gente que se relaciona  ¿Con qué frecuencia conversa o interactúa con personas chilenas no-indígenas?",
     startsWith(variable_elegida, "c7_3") ~ "Cuando interactúa con personas chilenas no-indígenas, ¿Cuán amistosa ha sido esa experiencia de contacto?",
-    startsWith(variable_elegida, "c12") ~ "Pensado con la gente que se relaciona ¿Cuántos de ellos diría usted que son (% PUEBLO ORIGINARIO)?",
+    startsWith(variable_elegida, "c12") ~ "Pensado con la gente que se relaciona ¿Cuántos de ellos diría usted que son pueblos originarios?",
     startsWith(variable_elegida, "d1_1") ~ "¿Cuánto conflicto diría usted que existe actualmente entre El Estado chileno y los pueblos originarios?",
     startsWith(variable_elegida, "d1_2") ~ "¿Cuánto conflicto diría usted que existe actualmente entre Indígenas y no-indígenas?",
     startsWith(variable_elegida, "d1_3") ~ "¿Cuánto conflicto diría usted que existe actualmente entre Empresas y los pueblos originarios?",
@@ -162,10 +162,13 @@ resultados <- resultados |>
     startsWith(variable_elegida, "d7_1") ~ "En vez de tanta preocupación por los derechos de las personas, lo que este país necesita es orden y mano dura",
     startsWith(variable_elegida, "d7_2") ~ "La obediencia y el respeto por la autoridad son los valores más importantes que los niños deberían aprender",
     startsWith(variable_elegida, "d7_3") ~ "Las parejas homosexuales estables debieran ser tratadas tal cual como se trata a las parejas casadas",
+    startsWith(variable_elegida, "e1_1") ~ "¿Qué tan de acuerdo está con devolver tierras a indígenas",
+    startsWith(variable_elegida, "e1_4") ~ "¿Qué tan de acuerdo está con reconocer constitucionalmente a Chile como un país multicultural?",
     
     TRUE ~ NA_character_ # Para casos donde no hay coincidencia, asignar NA
   )) |> drop_na(enunciado) |> 
-  filter(variable_elegida != "d7_1_o1cod")
+  filter(variable_elegida != "d7_1_o1cod",
+         variable_elegida!= "e1_4_o1cod")
 
 
 resultados |> count(variable_elegida) |> print(n= Inf)
