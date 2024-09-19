@@ -1,2 +1,4 @@
 # Sección Identidad
 ####  ¿Cuánto importante es para usted ser parte de los Pueblos Originarios?
+
+A lo largo de la Encuesta ELRI, el grado de importancia que las personas indígenas otorgan a ser originarios se ha mantenido relativamente estable. La mayoría se considera en un nivel intermedio de identificación, con cerca del 50% identificándose como “algo” a lo largo de los años, fluctuando ligeramente entre el 47.3% en 2016 y el 51.7% en 2023. La identificación con una importancia "bastante" ha mostrado una leve disminución desde el 45.1% en 2016 hasta el 39.6% en 2023, sugiriendo una posible tendencia hacia una identificación más moderada. Por otro lado, la proporción de quienes se identifican con poca importancia respecto a ser originarios ha permanecido baja, con cifras cercanas al 7.7% y 8.8% en los últimos años.
