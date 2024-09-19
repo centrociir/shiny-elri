@@ -3,4 +3,4 @@
 .RData
 .Ruserdata
 app.R
-bbdd
+bbdd/base_elri_preprocesada.rds
