@@ -1,0 +1,12 @@
+name: app-elri
+title: app-elri
+username: ciir
+account: ciir
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13648282
+bundleId: 9581860
+url: https://ciir.shinyapps.io/app-elri/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
