@@ -5,7 +5,7 @@ account: ciir
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 13648291
-bundleId:
+bundleId: 9581875
 url: https://ciir.shinyapps.io/elri-survey/
 version: 1
 asMultiple: FALSE
